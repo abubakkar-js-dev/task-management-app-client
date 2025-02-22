@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FaGoogle, FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import { toast } from 'react-toastify';
 
 const Login = () => {
+  const {loginUser,signInWithGoogle,setUser} = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -13,8 +16,16 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    // Handle Google OAuth login
-    console.log('Google login clicked');
+    
+    signInWithGoogle()
+    .then((result)=>{
+      toast.success('SignIn with google Successfully');
+      setUser(result.user);
+    })
+    .catch((error)=>{
+      toast.error(error.message);
+      console.log(error.message);
+    })
   };
 
   return (

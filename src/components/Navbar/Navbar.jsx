@@ -31,8 +31,7 @@ const Navbar = () => {
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-1">
             <NavLink to="/" icon={<FiHome />}>Home</NavLink>
-            <NavLink to="/add-task" icon={<FiPlusCircle />}>Add Task</NavLink>
-            <NavLink to="/manage-tasks" icon={<FiList />}>Manage Tasks</NavLink>
+            <NavLink to="/my-tasks" icon={<FiList />}>My Tasks</NavLink>
           </div>
 
           {/* Auth Buttons */}
@@ -114,7 +113,7 @@ const MobileMenu = () => {
         <div className="flex flex-col space-y-2">
           <MobileNavLink to="/" icon={<FiHome />}>Home</MobileNavLink>
           <MobileNavLink to="/add-task" icon={<FiPlusCircle />}>Add Task</MobileNavLink>
-          <MobileNavLink to="/manage-tasks" icon={<FiList />}>Manage Tasks</MobileNavLink>
+          <MobileNavLink to="/my-tasks" icon={<FiList />}>My Tasks</MobileNavLink>
           <div className="border-t border-gray-100 my-2"></div>
           <MobileNavLink to="/login" icon={<FiLogIn />}>Login</MobileNavLink>
           <Link

@@ -8,3 +8,8 @@
 body{
     font-family: "Nunito", serif;
 }
+
+body.dragging {
+    overflow: hidden;
+    touch-action: none; /* Disable touch scrolling */
+}
