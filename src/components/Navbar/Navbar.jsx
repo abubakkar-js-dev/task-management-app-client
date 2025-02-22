@@ -75,7 +75,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
-            <MobileMenu user={user} />
+            <MobileMenu user={user} handleLogout={handleLogout} />
           </div>
         </div>
       </div>
@@ -100,7 +100,7 @@ const NavLink = ({ to, children, icon }) => {
 };
 
 // Mobile Menu Component
-const MobileMenu = ({user}) => {
+const MobileMenu = ({user,handleLogout}) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
