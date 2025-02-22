@@ -21,4 +21,4 @@ This is the frontend for the **Task Management Application**, built using **Reac
 ## Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/abu-bakkar-js-dev/task-management-client.git
+   git clone https://github.com/abu-bakkar-js-dev/task-management-app-client.git
