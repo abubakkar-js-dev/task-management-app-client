@@ -2,6 +2,8 @@
 
 This is the frontend for the **Task Management Application**, built using **React (Vite.js)**. It features a **drag-and-drop** task board where users can manage tasks across **To-Do, In Progress, and Done** categories.
 
+Live Link: [Tasky](https://task-management-app-client-five.vercel.app/)
+
 ## Features
 ✅ Firebase Authentication (Google Sign-in)  
 ✅ Drag-and-drop task management  
