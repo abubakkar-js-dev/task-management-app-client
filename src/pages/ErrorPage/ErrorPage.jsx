@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FiAlertTriangle, FiArrowLeft, FiHome } from "react-icons/fi";
 import { FaRegSadTear } from "react-icons/fa";
+import { Helmet } from "react-helmet-async";
 
 const ErrorPage = () => {
   const navigate = useNavigate();
@@ -16,6 +17,9 @@ const ErrorPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4 py-16">
+                  <Helmet>
+                      <title>404 Not Found | Tasky</title>
+                  </Helmet>
       {/* Visual Error Indicator */}
       <div className="relative mb-8">
         <div className="absolute -inset-1 bg-blue-500 rounded-full opacity-20 animate-pulse"></div>

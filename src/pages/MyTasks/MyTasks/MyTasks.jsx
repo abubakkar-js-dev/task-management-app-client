@@ -8,6 +8,7 @@ import TaskForm from '../TaskForm/TaskForm';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import useAuth from '../../../hooks/useAuth';
 import Loading from '../../../components/Loading/Loading';
+import { Helmet } from 'react-helmet-async';
 
 const MyTasks = () => {
     const axiosPublic = useAxiosPublic();
@@ -206,6 +207,9 @@ const MyTasks = () => {
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-6xl">
+                        <Helmet>
+                            <title>My Tasks | Tasky</title>
+                        </Helmet>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-800">My Tasks</h1>
