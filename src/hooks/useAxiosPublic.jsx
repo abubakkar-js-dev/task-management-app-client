@@ -3,7 +3,7 @@ import axios from 'axios';
 const useAxiosPublic = () => {
   
   const instance = axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: 'https://task-management-server-ten-rose.vercel.app',
   });
   
   return instance;
