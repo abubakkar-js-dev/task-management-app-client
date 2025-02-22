@@ -136,12 +136,12 @@ const MobileMenu = ({user}) => {
           <MobileNavLink to="/my-tasks" icon={<FiList />}>My Tasks</MobileNavLink>
           <div className="border-t border-gray-100 my-2"></div>
           {user ? (
-            <Link
-              to="/logout"
+            <button
+              onClick={handleLogout}
               className="px-4 py-2 rounded-md bg-blue-500 text-white font-medium text-center hover:bg-blue-600 transition-all duration-300"
             >
               Logout
-            </Link>
+            </button>
           ) : (
             <>
               <MobileNavLink to="/login" icon={<FiLogIn />}>Login</MobileNavLink>
