@@ -1,13 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { FaGoogle, FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { toast } from 'react-toastify';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const Login = () => {
+  const axiosPublic = useAxiosPublic();
   const {loginUser,signInWithGoogle,setUser} = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -16,16 +19,31 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    
     signInWithGoogle()
-    .then((result)=>{
-      toast.success('SignIn with google Successfully');
-      setUser(result.user);
-    })
-    .catch((error)=>{
-      toast.error(error.message);
-      console.log(error.message);
-    })
+      .then((result) => {
+        const user = result.user;
+        toast.success('Sign-in with Google successfully');
+        setUser(user);
+  
+        // Send user data to the backend using Axios
+        axiosPublic
+          .post('/users', {
+            userId: user.uid,
+            email: user.email,
+            fullName: user.displayName,
+          })
+          .then((response) => {
+            console.log('User stored successfully:', response.data);
+            navigate('/my-tasks');
+          })
+          .catch((error) => {
+            console.error('Error storing user:', error);
+          });
+      })
+      .catch((error) => {
+        toast.error(error.message);
+        console.log(error.message);
+      });
   };
 
   return (
@@ -111,7 +129,7 @@ const Login = () => {
           
           <button
             onClick={handleGoogleLogin}
-            className="mt-4 w-full flex justify-center items-center gap-2 py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white hover:bg-gray-50 text-sm font-medium text-gray-700"
+            className="mt-4 w-full flex justify-center items-center gap-2 py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white hover:bg-gray-50 text-sm font-medium text-gray-700 hover: cursor-pointer"
           >
             <FaGoogle className="text-orange-500" />
             Sign in with Google

@@ -9,25 +9,31 @@ const AuthProvider = ({children}) => {
     const [error,setError] = useState(null);
     const googleProvider = new GoogleAuthProvider();
     console.log(user);
+    console.log(user?.uid);
 
 
     const createUser = (email,password)=>{
+        setLoading(true);
         return createUserWithEmailAndPassword(auth,email,password);
     }
 
     const loginUser = (email,password)=>{
+        setLoading(true);
         return signInWithEmailAndPassword(auth,email,password);
     }
 
     const updateUser = (updatedInfo)=>{
+        setLoading(true);
         return updateProfile(auth.currentUser,updatedInfo);
     }
 
     const signInWithGoogle = ()=>{
+        setLoading(true);
         return signInWithPopup(auth,googleProvider);
     }
 
     const signOutUser = ()=>{
+        setLoading(true);
         return signOut(auth);
     }
 
@@ -37,6 +43,11 @@ const AuthProvider = ({children}) => {
         updateUser,
         signInWithGoogle,
         signOutUser,
+        user,
+        setUser,
+        loading,
+        error
+
     }
 
     useEffect(()=>{

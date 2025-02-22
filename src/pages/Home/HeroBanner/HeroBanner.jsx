@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { FiCheckCircle, FiClock, FiTrendingUp } from "react-icons/fi";
 import { motion } from "framer-motion";
 
@@ -45,9 +46,9 @@ const HeroBanner = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors">
+              <Link to="/my-tasks" className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors">
                 Get Started — It's Free
-              </button>
+              </Link>
               <button className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-lg backdrop-blur-sm transition-colors">
                 Watch Demo
               </button>

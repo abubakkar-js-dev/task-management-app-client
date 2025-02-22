@@ -1,8 +1,24 @@
-# React + Vite
+# Task Management App - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend for the **Task Management Application**, built using **React (Vite.js)**. It features a **drag-and-drop** task board where users can manage tasks across **To-Do, In Progress, and Done** categories.
 
-Currently, two official plugins are available:
+## Features
+✅ Firebase Authentication (Google Sign-in)  
+✅ Drag-and-drop task management  
+✅ Instant task updates with real-time UI sync  
+✅ Fully responsive design  
+✅ Modern and minimal UI using **Tailwind CSS & DaisyUI**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+- **React** (Vite.js)
+- **Tailwind CSS** (with DaisyUI)
+- **React Router** (for navigation)
+- **Framer Motion** (for animations)
+- **React Query** (for data fetching & caching)
+- **Firebase** (for authentication)
+- **React Toastify** (for notifications)
+
+## Installation
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/abu-bakkar-js-dev/task-management-client.git

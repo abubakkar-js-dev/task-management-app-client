@@ -7,15 +7,19 @@ import { FiPlus } from 'react-icons/fi';
 import TaskColumn from '../TaskColumn/TaskColumn';
 import TaskForm from '../TaskForm/TaskForm';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
+import useAuth from '../../../hooks/useAuth';
+import Loading from '../../../components/Loading/Loading';
 
 const MyTasks = () => {
     const axiosPublic = useAxiosPublic();
+    const {user} = useAuth();
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editingTask, setEditingTask] = useState(null);
     const [isAdding, setIsAdding] = useState(false);
     const [filter, setFilter] = useState('all');
-    const userId = "user2";
+    // const userId = "user2"
+    const userId = user?.uid;
 
     const sensors = useSensors(
       useSensor(PointerSensor, {
@@ -75,37 +79,72 @@ const MyTasks = () => {
 
     const handleDragEnd = async (event) => {
         const { active, over } = event;
-
+    
+        console.log("Over object:", over); // Debugging
+    
         if (active.id !== over.id) {
-            setTasks((items) => {
-                const oldIndex = items.findIndex(item => item._id === active.id);
-                const newIndex = items.findIndex(item => item._id === over.id);
-
-                return arrayMove(items, oldIndex, newIndex);
-            });
-
-            // Update positions in the database
-            try {
-                const updatedTasks = [...tasks];
-                const oldIndex = updatedTasks.findIndex(item => item._id === active.id);
-                const newIndex = updatedTasks.findIndex(item => item._id === over.id);
-
-                const movedTasks = arrayMove(updatedTasks, oldIndex, newIndex);
-
-                // Update position values for all affected tasks
-                const updatedPositions = movedTasks.map((task, index) => ({
-                    _id: task._id,
-                    position: index
-                }));
-
-                // Send batch update to the server
-                await axios.post('/tasks/update-positions', { tasks: updatedPositions });
-            } catch (error) {
-                console.error('Failed to update positions:', error);
+            const draggedTask = tasks.find(task => task._id === active.id);
+            const targetCategory = over.id.split('-')[1]; // Extract the category from the id
+    
+            console.log("Dragged Task:", draggedTask); // Debugging
+            console.log("Target Category:", targetCategory); // Debugging
+    
+            if (draggedTask && targetCategory && draggedTask.category !== targetCategory) {
+                // Update the category of the dragged task
+                const updatedTask = { ...draggedTask, category: targetCategory };
+    
+                // Update the local state
+                setTasks((prevTasks) => {
+                    // Remove the task from the old category
+                    const filteredTasks = prevTasks.filter(task => task._id !== active.id);
+                    // Add the task to the new category with updated position
+                    return [...filteredTasks, updatedTask];
+                });
+    
+                // Update the task in the database
+                try {
+                    await axiosPublic.put(`/tasks/${updatedTask._id}`, {
+                        category: targetCategory,
+                        position: tasks.filter(task => task.category === targetCategory).length, // Add to the end of the new category
+                    });
+                } catch (error) {
+                    console.error('Failed to update task category:', error);
+                    // Revert the local state if the update fails
+                    setTasks(tasks);
+                }
+            } else {
+                // Handle reordering within the same category
+                setTasks((items) => {
+                    const oldIndex = items.findIndex(item => item._id === active.id);
+                    const newIndex = items.findIndex(item => item._id === over.id);
+    
+                    return arrayMove(items, oldIndex, newIndex);
+                });
+    
+                // Update positions in the database
+                try {
+                    const updatedTasks = [...tasks];
+                    const oldIndex = updatedTasks.findIndex(item => item._id === active.id);
+                    const newIndex = updatedTasks.findIndex(item => item._id === over.id);
+    
+                    const movedTasks = arrayMove(updatedTasks, oldIndex, newIndex);
+    
+                    // Create an array of updated positions
+                    const updatedPositions = movedTasks.map((task, index) => ({
+                        _id: task._id,
+                        position: index, // Update the position based on the new index
+                    }));
+    
+                    // Send batch update to the server
+                    await axiosPublic.post('/tasks/update-positions', { tasks: updatedPositions });
+                } catch (error) {
+                    console.error('Failed to update positions:', error);
+                    // Revert the local state if the update fails
+                    setTasks(tasks);
+                }
             }
         }
     };
-
     const handleAddTask = async (taskData) => {
         try {
             const maxPosition = tasks.length > 0
@@ -163,11 +202,7 @@ const MyTasks = () => {
     const doneTasks = filteredTasks.filter(task => task.category === 'Done');
 
     if (loading) {
-        return (
-            <div className="flex justify-center items-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-            </div>
-        );
+        return <Loading />
     }
 
     return (

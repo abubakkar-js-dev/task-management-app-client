@@ -1,8 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FiHome, FiPlusCircle, FiList, FiLogIn, FiUserPlus } from "react-icons/fi";
+import useAuth from "../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
+  const {user,signOutUser} = useAuth();
+  const handleLogout = ()=>{
+    signOutUser()
+    .then(()=>{
+      toast.success('Logged out successfully');
+    })
+    .catch((error)=>{
+      toast.error('Error logging out');
+    })
+  }
   return (
     <div className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3">
@@ -36,25 +48,34 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link
-              to="/login"
-              className="px-4 py-2 rounded-md text-blue-500 font-medium hover:bg-blue-50 transition-all duration-300 flex items-center space-x-2"
-            >
-              <FiLogIn className="transition-transform group-hover:rotate-12" />
-              <span>Login</span>
-            </Link>
-            <Link
-              to="/register"
-              className="px-4 py-2 rounded-md bg-blue-500 text-white font-medium hover:bg-blue-600 transition-all duration-300 flex items-center space-x-2 group hover:shadow-md"
-            >
-              <FiUserPlus className="transition-transform group-hover:scale-110" />
-              <span>Sign Up</span>
-            </Link>
+            {user ? (
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 rounded-md bg-blue-500 text-white font-medium hover:bg-blue-600 transition-all duration-300"
+              >
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="px-4 py-2 rounded-md text-blue-500 font-medium hover:bg-blue-50 transition-all duration-300"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-4 py-2 rounded-md bg-blue-500 text-white font-medium hover:bg-blue-600 transition-all duration-300"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
-            <MobileMenu />
+            <MobileMenu user={user} />
           </div>
         </div>
       </div>
@@ -79,7 +100,7 @@ const NavLink = ({ to, children, icon }) => {
 };
 
 // Mobile Menu Component
-const MobileMenu = () => {
+const MobileMenu = ({user}) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
@@ -112,17 +133,28 @@ const MobileMenu = () => {
       >
         <div className="flex flex-col space-y-2">
           <MobileNavLink to="/" icon={<FiHome />}>Home</MobileNavLink>
-          <MobileNavLink to="/add-task" icon={<FiPlusCircle />}>Add Task</MobileNavLink>
           <MobileNavLink to="/my-tasks" icon={<FiList />}>My Tasks</MobileNavLink>
           <div className="border-t border-gray-100 my-2"></div>
-          <MobileNavLink to="/login" icon={<FiLogIn />}>Login</MobileNavLink>
-          <Link
-            to="/signup"
-            className="px-4 py-2 rounded-md bg-blue-500 text-white font-medium text-center hover:bg-blue-600 transition-all duration-300 flex items-center justify-center space-x-2 group"
-          >
-            <FiUserPlus className="transition-transform duration-300 group-hover:scale-110" />
-            <span>Sign Up</span>
-          </Link>
+          {user ? (
+            <Link
+              to="/logout"
+              className="px-4 py-2 rounded-md bg-blue-500 text-white font-medium text-center hover:bg-blue-600 transition-all duration-300"
+            >
+              Logout
+            </Link>
+          ) : (
+            <>
+              <MobileNavLink to="/login" icon={<FiLogIn />}>Login</MobileNavLink>
+              <Link
+                to="/signup"
+                className="px-4 py-2 rounded-md bg-blue-500 text-white font-medium text-center hover:bg-blue-600 transition-all duration-300 flex items-center justify-center space-x-2 group"
+              >
+                <FiUserPlus className="transition-transform duration-300 group-hover:scale-110" />
+                <span>Sign Up</span>
+              </Link>
+            </>
+          )
+            }
         </div>
       </div>
     </div>

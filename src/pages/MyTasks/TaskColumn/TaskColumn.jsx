@@ -4,7 +4,10 @@ import SortableTaskItem from '../ShortableTaskItem/ShortableTaskItem';
 
 const TaskColumn = ({ title, tasks, onEdit, onDelete, children }) => {
     return (
-        <div className="bg-gray-50 rounded-lg p-4 w-full md:w-80">
+        <div
+            data-category={title} 
+            className="bg-gray-50 rounded-lg p-4 w-full md:w-80"
+        >
             <h2 className="font-bold text-lg mb-4 text-gray-800 flex items-center">
                 {title === 'To-Do' && <FiClipboard className="mr-2 text-blue-500" />}
                 {title === 'In Progress' && <FiLoader className="mr-2 text-orange-500" />}
